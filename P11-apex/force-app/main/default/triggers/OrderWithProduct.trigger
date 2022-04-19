@@ -1,14 +1,12 @@
-trigger OrderWithProduct on Order (before update, after delete) {
-        
-        if(trigger.isUpdate && trigger.isBefore) {
+trigger OrderWithProduct on Order(before update, after delete) {
+    if (Trigger.isUpdate && Trigger.isBefore) {
+        List<Order> newOrders = new List<Order>(Trigger.new);
+        OrderService.orderHaveProducts(Trigger.oldMap, newOrders);
+    }
 
-                List<Order> newOrders = new List<Order>(trigger.new);
-                OrderService.orderHaveProducts(trigger.oldMap, newOrders);
-        }
-    
-        if(trigger.isdelete && trigger.isafter) {   
-                List<Order> oldOrders = trigger.old;
-                OrderService.accountWithDeletedOrders(trigger.old);
-        }
+    if (Trigger.isdelete && Trigger.isafter) {
+        List<Order> oldOrders = Trigger.old;
+        OrderService.accountWithDeletedOrders(Trigger.old);
+    }
 
 }
