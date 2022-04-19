@@ -1,4 +1,6 @@
-public with sharing class TestDataFactory {
+
+@IsTest
+public class TestDataFactory {
     
     public static void  LoadData(integer size) {
         Account acc1 = new Account(Name = 'Test Account 1',active__c = 'true');
@@ -51,5 +53,24 @@ public with sharing class TestDataFactory {
 
     }
 
+    public static void insertAccountsAndTasks(integer size) {
+        List<Account> listAccount = new List<Account>();
+        for (integer i=0; i<size; i++) {
+            listAccount.add(new Account(Name = 'Account with no task ' + i));
+        }
+        insert listAccount;
+        
+        listAccount.clear();
+        for (integer i=0; i<size; i++) {
+            listAccount.add(new Account(Name = 'Account with task ' + i));
+        }
+        insert listAccount;
+        
+        List<Task> tasks = new List<Task>();
+        for(Account acc: listAccount) {
+            tasks.add(new Task (whatId = acc.Id, Subject = 'Email'));
+        }
+        insert tasks;
+    } 
     
 }
