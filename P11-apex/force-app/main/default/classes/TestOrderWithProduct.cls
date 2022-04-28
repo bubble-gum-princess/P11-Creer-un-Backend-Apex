@@ -19,7 +19,7 @@ public class TestOrderWithProduct {
         for (Database.SaveResult RS : listRS) {
             System.assert(!RS.isSuccess());
             System.assertEquals(
-                'Veuillez saisir des produits avant activer ordre',
+                'Veuillez saisir des produits avant activer la commande',
                 RS.getErrors()[0].getMessage()
             );
         }
