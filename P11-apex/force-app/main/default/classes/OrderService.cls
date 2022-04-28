@@ -14,19 +14,20 @@ public with sharing class OrderService {
 
         insert Tasks;
     }
-    public static void orderHaveProducts(Map<Id, Order> oldOrders, List<Order> newOrders) {
+    public static void orderHaveProducts(Map<Id, Order> oldOrders, Map<Id, Order> newOrders) {
         List<Order> orders = [
             SELECT Id, (SELECT Id FROM OrderItems)
             FROM Order
-            WHERE Id IN :newOrders
+            WHERE Id IN :newOrders.values()
         ];
         for (Order anOrder : orders) {
+            Order newOrder = newOrders.get(anOrder.Id);
             if (
                 oldOrders.get(anOrder.Id).Status == 'Draft' &&
-                anOrder.Status == 'Active' &&
+                newOrder.Status == 'Active' &&
                 anOrder.OrderItems.isEmpty()
             ) {
-                anOrder.addError('Veuillez saisir des produits avant activer la commande');
+                newOrder.addError('Veuillez saisir des produits avant activer la commande');
             }
         }
     }

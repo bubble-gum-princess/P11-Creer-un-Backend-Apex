@@ -1,7 +1,6 @@
 trigger OrderWithProduct on Order(before update, after delete) {
     if (Trigger.isUpdate && Trigger.isBefore) {
-        List<Order> newOrders = new List<Order>(Trigger.new);
-        OrderService.orderHaveProducts(Trigger.oldMap, newOrders);
+        OrderService.orderHaveProducts(Trigger.oldMap, Trigger.newMap);
     }
 
     if (Trigger.isdelete && Trigger.isafter) {

@@ -28,10 +28,14 @@ public class TestCreateTasksAndSchedular {
         // CRON expression: 22 PM every first Monady of the Month.
         String cronExpr = '0 0 22 ? * 2#1';
 
+        System.assertEquals(size, [SELECT COUNT() FROM Task]);
+
         Test.startTest();
-        CreateTasksSchedular abs = new CreateTasksSchedular();
-        String jobId = System.schedule('myJobTestJobName', cronExpr, abs);
+        String jobId = System.schedule('myJobTestJobName', cronExpr, new CreateTasksSchedular());
         Test.stopTest();
+
+        System.assertEquals('Finished', [SELECT State FROM CronTrigger WHERE Id = :jobId][0].State);
+
         System.assertEquals(size + 200, [SELECT COUNT() FROM Task]);
 
         Task b = [SELECT whatId FROM Task WHERE Subject = 'Call' LIMIT 1];
