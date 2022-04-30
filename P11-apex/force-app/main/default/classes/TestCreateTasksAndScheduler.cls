@@ -8,7 +8,7 @@ public class TestCreateTasksAndScheduler {
     }
 
     @isTest
-    public static void test() {
+    public static void testBatch() {
         System.assertEquals(size, [SELECT COUNT() FROM Task]);
 
         Test.startTest();
